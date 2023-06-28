@@ -1,0 +1,40 @@
+1. Create role for autoscaler
+  # Save this policy with name, amazonEksClusterAutoscalerPolicy
+  {
+    "Version": "2012-10-17",
+    "Statement": [
+      {
+        "Effect": "Allow",
+        "Action": [
+          "autoscaling:DescribeAutoScalingGroups",
+          "autoscaling:DescribeAutoScalingInstances",
+          "autoscaling:DescribeLaunchConfigurations",
+          "autoscaling:DescribeScalingActivities",
+          "autoscaling:DescribeTags",
+          "ec2:DescribeInstanceTypes",
+          "ec2:DescribeLaunchTemplateVersions"
+        ],
+        "Resource": ["*"]
+      },
+      {
+        "Effect": "Allow",
+        "Action": [
+          "autoscaling:SetDesiredCapacity",
+          "autoscaling:TerminateInstanceInAutoScalingGroup",
+          "ec2:DescribeImages",
+          "ec2:GetInstanceTypesFromInstanceRequirements",
+          "eks:DescribeNodegroup"
+        ],
+        "Resource": ["*"]
+      }
+    ]
+  }
+
+  # create a role with this policy with OIDC trust policy
+  # Edit trust policy of auto scaler. 
+  # https://www.youtube.com/watch?v=gwmdboC-BtE
+
+2. apply autoscaler config file. # cluster-autoscaler-autodiscover.yaml
+  # update cluster name. 
+  # also check for kubernetes version
+  
