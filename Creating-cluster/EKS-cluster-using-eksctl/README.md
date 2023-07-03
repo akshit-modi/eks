@@ -23,12 +23,6 @@ eksctl get cluster
 - To do so using `eksctl` we can use the  below command. 
 - Use latest eksctl version
 ```                   
-# Template
-eksctl utils associate-iam-oidc-provider \
-    --region <REGION> \
-    --cluster <CLUSTER_NAME> \
-    --approve
-
 # Replace with region & cluster name
 eksctl utils associate-iam-oidc-provider \
     --region <REGION> \
@@ -43,6 +37,8 @@ eksctl utils associate-iam-oidc-provider \
 # Create Public Node Group   
 eksctl create nodegroup --cluster=<CLUSTER_NAME> \
                         --region=<REGION> \
+                        --subnet-ids=<SUBNET_IDS> \ # provide subnet-ids separated by comma. 
+                        --node-private-networking \ # (optional) # provide this when you are passing private subnet-ids.
                         --name=<NODEGROUP_NAME> \
                         --node-type=t3.medium \ # update node type
                         --nodes=1 \ 
@@ -85,3 +81,7 @@ kubectl config view --minify
 ### Verify Security Group Associated to Worker Nodes
 - Go to Services -> EC2 -> Worker Nodes
 - Click on **Security Group** associated to EC2 Instance which contains `remote` in the name.
+
+## Notes: 
+- If you stuck on any step and resource is not able tp create. Try to remove the same stack from cloud formation console and rerun the command. 
+- If you are using different aws profile you can pass that as a argument in eksctl command. 
