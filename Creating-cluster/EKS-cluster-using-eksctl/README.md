@@ -10,13 +10,20 @@
 ```
 # Create Cluster
 eksctl create cluster --name=<CLUSTER_NAME> \
+                      --version=<CLUSTER_VERSION> \ 
                       --region=<REGION> \
-                      --zones=<AZ_1>,<AZ_2> \
+                      --full-ecr-access \ 
+                      --appmesh-access \
+                      --asg-access \
+                      --alb-ingress-access  \
+                      --vpc-private-subnets=<SUBNET_IDS> \
                       --without-nodegroup 
 
 # Get List of clusters
 eksctl get cluster                  
 ```
+
+## Optional Step: Enable secrets
 
 ## Step 2: Create & Associate IAM OIDC Provider for our EKS Cluster
 - To enable and use AWS IAM roles for Kubernetes service accounts on our EKS cluster, we must create &  associate OIDC identity provider.
@@ -34,7 +41,7 @@ eksctl utils associate-iam-oidc-provider \
 - You can use existing key or create a new key to login inside EKS worker node.
 - These add-ons will create the respective IAM policies for us automatically within our Node Group role.
  ```
-# Create Public Node Group   
+# Create Private Node Group   
 eksctl create nodegroup --cluster=<CLUSTER_NAME> \
                         --region=<REGION> \
                         --subnet-ids=<SUBNET_IDS> \ # provide subnet-ids separated by comma. 
@@ -83,5 +90,5 @@ kubectl config view --minify
 - Click on **Security Group** associated to EC2 Instance which contains `remote` in the name.
 
 ## Notes: 
-- If you stuck on any step and resource is not able tp create. Try to remove the same stack from cloud formation console and rerun the command. 
+- If you stuck on any step and resource is not able to create. Try to remove the same stack from cloud formation console and rerun the command. 
 - If you are using different aws profile you can pass that as a argument in eksctl command. 
